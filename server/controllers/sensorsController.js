@@ -74,6 +74,11 @@ const getSensorBySerialNumber = async (request,response)=>{
     response.json(sensor);
 };
 
+const RealTimeData= async (request,response)=>{
+   const sensor= await SensorService.realTimeData(request.body.serialNumber,request.body.soilMoisture,request.body.temperature,request.body.light)
+   response.send('ok')
+}
+
 module.exports={
     createSensor,
     getAllSensors,
@@ -82,5 +87,6 @@ module.exports={
     getSensorSoilMoisture,
     getSensorTemp,
     getSensorLight,
-    getSensorBySerialNumber
+    getSensorBySerialNumber,
+    RealTimeData
  };
