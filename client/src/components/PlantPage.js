@@ -28,31 +28,18 @@ export default function Plant() {
         gardenID: Response.data.GardenID,
         sensorID: Response.data.sensorID
       };
-      setPlant(plantResponse);
+      // setPlant(plantResponse);
+      setPlant(Response.data)
     }
   })
 
-  React.useEffect(() => {
-    // pick the data you want to show,the ID of the container in the html,the color of each bar
-    if (plant.sensorID != null) {
-      axios.get('http://localhost:8080/sensor/soilMoisture/' + plant.sensorID).then((Response) => {
-        var soilMoisture = []
-        Response.data.map((data, key) => {
-          soilMoisture.push({ name: data.date, score: data.curMoist })
-        })
-      
-        //clear old charts
-        d3.selectAll('svg').remove()
-  
+  const [sensor,setSensor]=React.useState('');
+  if(!sensor._id&&plant.sensorID)
+  axios.get('http://localhost:8080/sensor/'+plant.sensorID).then((Response)=>{
 
-        DrawGraph(soilMoisture, 'd3-container', '#140c04')
- 
-
-
-      })
-    }
-
+  setSensor(Response.data)
   })
+
 
     return (
       <div>
@@ -70,19 +57,9 @@ export default function Plant() {
                 <div className="col-lg-8 details order-2 order-lg-1">{/*main content*/}
                   <h2 style={{ fontSize: '30px' }}>{plant.species}</h2>
 
-                  <nav className="nav-menu d-none d-lg-block" > {/*display*/}
-                    <ul>
-                      {(plant.sensorID) ? <li><a style={{ fontSize: '20px' }}>Soil moistrue of the last 3 days:</a></li>
-                        : null}
-                    </ul>
-                  </nav>
-                  <br></br>
 
-                  <div id='d3-container'></div>
-                  <br></br>
-                  <div id='temperature'>
-                  </div>
-                  {/* <Chart title='Soil Moisture'></Chart> */}
+              
+                  <Chart title='Soil Moisture' sensorData={sensor.soilMoisture} optimalValue={plant.optimalSoilMoisture}></Chart>
 
 
                   <div id="outer">

@@ -8,6 +8,7 @@ const Garden =require('../models/gardenModel')
 
 
 
+
 const createSensor = async(plantID)=>{
    var randomSerial= Math.floor(Math.random() * 100);     // returns a random integer from 0 to 90
     const sensor= new Sensor({
@@ -89,7 +90,7 @@ const getSensorBySerialNumber = async(serialNumber)=>{
                   soilTest(plant,soilMoisture)
                   lightTest(plant,light)
 
-                  plant.healthStatus=(plant.tempStatus+plant.moistStatus+plant.lightStatus)/3
+                  plant.healthStatus=(Math.abs(plant.tempStatus)+Math.abs(plant.moistStatus)+Math.abs(plant.lightStatus))/3
                   plant.save()
                })            
          })
